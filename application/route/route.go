@@ -1,22 +1,28 @@
 package route
 
-import "errors"
+import (
+	"bufio"
+	"encoding/json"
+	"errors"
+	"os"
+	"strconv"
+	"strings"
+)
 
-
-
+// Route represents a request of new delivery request
 type Route struct {
 	ID        string     `json:"routeId"`
 	ClientID  string     `json:"clientId"`
 	Positions []Position `json:"position"`
 }
 
-
+// Position is a type which contains the lat and long
 type Position struct {
 	Lat  float64 `json:"lat"`
 	Long float64 `json:"long"`
 }
 
-
+// PartialRoutePosition is the actual response which the system will return
 type PartialRoutePosition struct {
 	ID       string    `json:"routeId"`
 	ClientID string    `json:"clientId"`
@@ -24,9 +30,12 @@ type PartialRoutePosition struct {
 	Finished bool      `json:"finished"`
 }
 
+// NewRoute creates a *Route struct
 func NewRoute() *Route {
 	return &Route{}
 }
+
+// LoadPositions loads from a .txt file all positions (lat and long) to the Position attribute of the struct
 func (r *Route) LoadPositions() error {
 	if r.ID == "" {
 		return errors.New("route id not informed")
@@ -55,6 +64,7 @@ func (r *Route) LoadPositions() error {
 	return nil
 }
 
+// ExportJsonPositions generates a slice of string in Json using PartialRoutePosition struct
 func (r *Route) ExportJsonPositions() ([]string, error) {
 	var route PartialRoutePosition
 	var result []string

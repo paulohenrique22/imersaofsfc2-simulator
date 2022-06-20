@@ -1,0 +1,10 @@
+# Para consumir
+kafka-console-consumer --bootstrap-server=localhost:9092 --topic=readtest
+
+# Para produzir
+kafka-console-producer --bootstrap-server=localhost:9092 --topic=readtest
+
+
+
+
+kafka-console-consumer --bootstrap-server=localhost:9092 --topic=route.new-position --group=terminal
